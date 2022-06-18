@@ -11,7 +11,7 @@ function getBaseUrl() {
   if (process.browser) return ''; // Browser should use correct path
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
 
-  return `httpL//localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
+  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 }
 
 export default withTRPC<AppRouter>({
