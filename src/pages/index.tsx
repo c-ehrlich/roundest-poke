@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import { getOptionsForVote } from '../util/getRandomPokemon';
+import trpc from '../util/trpc';
 
 interface Props {
   first: number;
@@ -7,6 +8,11 @@ interface Props {
 }
 
 const Home: NextPage<Props> = ({ first, second }: Props) => {
+  const firstPokemon = trpc.useQuery(['get-pokemon-by-id', { id: first }]);
+  const secondPokemon = trpc.useQuery(['get-pokemon-by-id', { id: second }]);
+
+  console.log(firstPokemon.data);
+
   return (
     <div className='h-screen w-screen flex flex-col justify-center items-center'>
       <div className='text-2xl text-center'>Which Pokémon is Roundest?</div>
@@ -22,7 +28,7 @@ const Home: NextPage<Props> = ({ first, second }: Props) => {
 
 export default Home;
 
-export function getServerSideProps() {
+export async function getServerSideProps() {
   const [first, second] = getOptionsForVote();
 
   return {
