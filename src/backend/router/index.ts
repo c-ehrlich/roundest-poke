@@ -12,14 +12,18 @@ export const appRouter = trpc
     }),
     async resolve({ input }) {
       const api = new PokemonClient();
-      const pokemon = await api.getPokemonById(input.id);
-      return { name: pokemon.name, sprite: pokemon.sprites.front_default };
+
+      const pokemon = await prisma.pokemon.findUnique({
+        where: { id: input.id },
+      });
+      if (!pokemon) throw new Error('Pokemon doesnt exist');
+      return pokemon;
     },
   })
   .mutation('cast-vote', {
     input: z.object({
-      votedFor: z.number(),
-      votedAgainst: z.number(),
+      votedForId: z.number(),
+      votedAgainstId: z.number(),
     }),
     async resolve({ input }) {
       const voteInDb = await prisma.vote.create({

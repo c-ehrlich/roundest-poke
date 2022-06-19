@@ -20,9 +20,9 @@ const Home: NextPage = () => {
 
   function voteForRoundest(selected: number) {
     if (selected === first) {
-      voteMutation.mutate({ votedFor: first, votedAgainst: second });
+      voteMutation.mutate({ votedForId: first, votedAgainstId: second });
     } else {
-      voteMutation.mutate({ votedFor: second, votedAgainst: first });
+      voteMutation.mutate({ votedForId: second, votedAgainstId: first });
     }
 
     updateIds(getOptionsForVote());
@@ -73,7 +73,7 @@ const PokemonListing: FC<{ pokemon: PokemonFromServer; vote: () => void }> = (
         {props.pokemon.name}
       </div>
       <Image
-        src={props.pokemon.sprite!}
+        src={props.pokemon.spriteUrl!}
         alt={props.pokemon.name}
         layout='fixed'
         width={256}
