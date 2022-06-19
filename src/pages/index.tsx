@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import type { NextPage } from 'next';
-import { getOptionsForVote } from '../util/getRandomPokemon';
-import trpc from '../util/trpc';
+import { getOptionsForVote } from '../utils/getRandomPokemon';
+import trpc from '../utils/trpc';
 import { inferQueryResponse } from './api/trpc/[trpc]';
 
 const btn =
