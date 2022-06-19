@@ -49,11 +49,11 @@ const Home: NextPage = () => {
       ) : (
         <div>Loading...</div>
       )}
-      <div className='p-16'>
+      <div className='sticky bottom-0 w-full mb-8 text-xl flex gap-4 justify-center'>
         <Link href='/results'>
           <a>Results</a>
-        </Link>{' '}
-        /{' '}
+        </Link>
+        <div className='text-gray-500'>|</div>
         <Link href='/about'>
           <a>About</a>
         </Link>
