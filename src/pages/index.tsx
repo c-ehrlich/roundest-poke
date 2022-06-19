@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import { getOptionsForVote } from '../utils/getRandomPokemon';
 import trpc from '../utils/trpc';
 import { inferQueryResponse } from './api/trpc/[trpc]';
+import Link from 'next/link';
 
 const btn =
   'inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
@@ -47,7 +48,15 @@ const Home: NextPage = () => {
       ) : (
         <div>Loading...</div>
       )}
-      <div className='p-16'>Results / About</div>
+      <div className='p-16'>
+        <Link href='/results'>
+          <a>Results</a>
+        </Link>{' '}
+        /{' '}
+        <Link href='/about'>
+          <a>About</a>
+        </Link>
+      </div>
     </div>
   );
 };
