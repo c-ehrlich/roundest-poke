@@ -4,6 +4,7 @@ import { getOptionsForVote } from '../utils/getRandomPokemon';
 import trpc from '../utils/trpc';
 import { inferQueryResponse } from './api/trpc/[trpc]';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const btn =
   'inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
@@ -71,10 +72,12 @@ const PokemonListing: FC<{ pokemon: PokemonFromServer; vote: () => void }> = (
       <div className='text-xl text-center capitalize mt-[-2rem]'>
         {props.pokemon.name}
       </div>
-      <img
+      <Image
         src={props.pokemon.sprite!}
         alt={props.pokemon.name}
-        className='w-64 h-64'
+        layout='fixed'
+        width={256}
+        height={256}
       />
       <button className={btn} onClick={() => props.vote()}>
         Rounder
