@@ -36,9 +36,7 @@ const Home: NextPage = () => {
 
   return (
     <div className='h-screen w-screen flex flex-col justify-between items-center'>
-      <div className='p-8 text-2xl text-center'>
-        Which Pokémon is Rounder? {JSON.stringify(dataLoaded)}
-      </div>
+      <div className='p-8 text-2xl text-center'>Which Pokémon is Rounder?</div>
       {dataLoaded ? (
         <div className='rounded p-8 max-w-2xl flex flex-col sm:flex-row justify-between items-center'>
           <PokemonListing
