@@ -1,19 +1,12 @@
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { prisma } from '../backend/utils/prisma';
 import { AsyncReturnType } from '../utils/inferType';
 
 const ONE_MINUTE = 1 * 60;
 
 type PokemonQueryResult = AsyncReturnType<typeof getPokemonInOrder>;
-
-const generateCountPercent = (pokemon: PokemonQueryResult[number]) => {
-  const { votesFor, votesAgainst } = pokemon._count;
-  const count = (100 * votesFor) / (votesFor + votesAgainst);
-
-  if (isNaN(count)) return (0.0).toFixed(2);
-  return count.toFixed(2);
-};
 
 const PokemonResultListing: React.FC<{
   pokemon: PokemonQueryResult[number];
@@ -35,7 +28,7 @@ const PokemonResultListing: React.FC<{
         />
         <div className='text-xl'>{props.pokemon.name}</div>
       </div>
-      <div className='text-xl mr-4'>{generateCountPercent(props.pokemon)}%</div>
+      <div className='text-xl mr-4'>{props.pokemon.countPercent}%</div>
     </div>
   );
 };
@@ -45,6 +38,9 @@ const ResultsPage: React.FC<{
 }> = (props) => {
   return (
     <div className='flex flex-col w-screen items-center'>
+      <Link href='/'>
+        <a className='w-screen text-left text-xl'>{'<'} back</a>
+      </Link>
       <h1 className='text-2xl m-4'>Results</h1>
       {props.pokemon.map((pokemon, index) => (
         <PokemonResultListing
@@ -66,7 +62,7 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 const getPokemonInOrder = async () => {
-  return await prisma.pokemon.findMany({
+  const pokemon = await prisma.pokemon.findMany({
     orderBy: { votesFor: { _count: 'desc' } },
     select: {
       id: true,
@@ -79,6 +75,28 @@ const getPokemonInOrder = async () => {
         },
       },
     },
+  });
+
+  type PokemonWithCountPercent = typeof pokemon[number] & {
+    countPercent: string;
+  };
+
+  const generateCountPercent = (poke: typeof pokemon[number]) => {
+    const { votesFor, votesAgainst } = poke._count;
+    const count = (100 * votesFor) / (votesFor + votesAgainst);
+
+    if (isNaN(count)) return (0.0).toFixed(2);
+    return count.toFixed(2);
+  };
+
+  const pokemonWithCountPercent: PokemonWithCountPercent[] = pokemon.map(
+    (p: typeof pokemon[number]) => ({
+      ...p,
+      countPercent: generateCountPercent(p),
+    })
+  );
+  return pokemonWithCountPercent.sort((a, b) => {
+    return Number(b.countPercent) - Number(a.countPercent);
   });
 };
 
