@@ -7,7 +7,13 @@ const ONE_MINUTE = 1 * 60;
 
 type PokemonQueryResult = AsyncReturnType<typeof getPokemonInOrder>;
 
-// TODO sort em my own way (by percentage)
+const generateCountPercent = (pokemon: PokemonQueryResult[number]) => {
+  const { votesFor, votesAgainst } = pokemon._count;
+  const count = (100 * votesFor) / (votesFor + votesAgainst);
+
+  if (isNaN(count)) return (0.0).toFixed(2);
+  return count.toFixed(2);
+};
 
 const PokemonResultListing: React.FC<{
   pokemon: PokemonQueryResult[number];
@@ -29,12 +35,7 @@ const PokemonResultListing: React.FC<{
         />
         <div className='text-xl'>{props.pokemon.name}</div>
       </div>
-      <div className='mr-4 flex flex-col'>
-        <div className='self-end'>For: {props.pokemon._count.votesFor}</div>
-        <div className='self-end'>
-          Against: {props.pokemon._count.votesAgainst}
-        </div>
-      </div>
+      <div className='text-xl mr-4'>{generateCountPercent(props.pokemon)}%</div>
     </div>
   );
 };
