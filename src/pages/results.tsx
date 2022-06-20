@@ -57,7 +57,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const pokemonOrdered = await getPokemonInOrder();
   return {
     props: { pokemon: pokemonOrdered },
-    // revalidate: ONE_MINUTE,
+    revalidate: ONE_MINUTE,
   };
 };
 
