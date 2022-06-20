@@ -28,13 +28,18 @@ const Home: NextPage = () => {
     updateIds(getOptionsForVote());
   }
 
+  const dataLoaded =
+    !firstPokemon.isLoading &&
+    !!firstPokemon.data &&
+    !secondPokemon.isLoading &&
+    !!secondPokemon.data;
+
   return (
     <div className='h-screen w-screen flex flex-col justify-between items-center'>
-      <div className='p-8 text-2xl text-center'>Which Pokémon is Roundest?</div>
-      {!firstPokemon.isLoading &&
-      firstPokemon.data &&
-      !secondPokemon.isLoading &&
-      secondPokemon.data ? (
+      <div className='p-8 text-2xl text-center'>
+        Which Pokémon is Rounder? {JSON.stringify(dataLoaded)}
+      </div>
+      {dataLoaded ? (
         <div className='rounded p-8 max-w-2xl flex flex-col sm:flex-row justify-between items-center'>
           <PokemonListing
             pokemon={firstPokemon.data}
@@ -47,7 +52,7 @@ const Home: NextPage = () => {
           />
         </div>
       ) : (
-        <div>Loading...</div>
+        <Image src='/puff.svg' alt='loading' width={64} height={64} />
       )}
       <div className='bottom-0 w-full p-4 text-xl flex gap-4 justify-center'>
         <Link href='/results'>
